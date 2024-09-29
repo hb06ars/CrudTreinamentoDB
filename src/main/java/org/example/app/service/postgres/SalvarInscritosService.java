@@ -1,4 +1,4 @@
-package org.example.app.service.kafka.postgres;
+package org.example.app.service.postgres;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.entity.InscritoEntity;

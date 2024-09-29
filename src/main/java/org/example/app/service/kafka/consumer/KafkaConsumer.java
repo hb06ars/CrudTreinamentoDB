@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.example.app.service.kafka.postgres.SalvarInscritosService;
+import org.example.app.service.postgres.SalvarInscritosService;
 import org.example.domain.dto.InscritoDTO;
 import org.example.infra.mapper.InscritoMapper;
 import org.springframework.beans.factory.annotation.Autowired;

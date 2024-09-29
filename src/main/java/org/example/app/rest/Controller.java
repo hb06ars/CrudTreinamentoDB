@@ -2,7 +2,7 @@ package org.example.app.rest;
 
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
-import org.example.app.service.kafka.postgres.SalvarInscritosService;
+import org.example.app.service.postgres.SalvarInscritosService;
 import org.example.app.service.kafka.producer.KafkaProducer;
 import org.example.domain.dto.InscritoDTO;
 import org.example.domain.entity.InscritoEntity;
