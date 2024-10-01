@@ -27,7 +27,6 @@ public class Controller {
     public void start(@RequestBody InscritoDTO inscritoDTO) throws IOException {
         log.info("Iniciando a aplicação.");
         producer.send(inscritoDTO);
-        log.info("Aplicação em andamento.");
     }
 
     @GetMapping("/{id}")

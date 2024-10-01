@@ -35,7 +35,7 @@ public class KafkaReactiveProducer {
 
             sender.send(Mono.just(record))
                     .doOnError(e -> System.err.println("Falha no envio: " + e))
-                    .doOnNext(r -> System.out.println("Mensagem " + r.correlationMetadata() + " sent successfully"))
+                    .doOnNext(r -> System.out.println("Mensagem " + r.correlationMetadata() + " enviada com sucesso"))
                     .subscribe();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
