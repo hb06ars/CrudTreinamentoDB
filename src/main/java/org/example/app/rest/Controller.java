@@ -2,8 +2,8 @@ package org.example.app.rest;
 
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
+import org.example.app.service.kafka.producer.KafkaReactiveProducer;
 import org.example.app.service.postgres.SalvarInscritosService;
-import org.example.app.service.kafka.producer.KafkaProducer;
 import org.example.domain.dto.InscritoDTO;
 import org.example.domain.entity.InscritoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 public class Controller {
 
     @Autowired
-    KafkaProducer producer;
+    KafkaReactiveProducer producer;
 
     @Autowired
     private SalvarInscritosService service;
@@ -27,7 +27,7 @@ public class Controller {
     public void start(@RequestBody InscritoDTO inscritoDTO) throws IOException {
         log.info("Iniciando a aplicação.");
         producer.send(inscritoDTO);
-        log.info("Aplicação finalizada.");
+        log.info("Aplicação em andamento.");
     }
 
     @GetMapping("/{id}")

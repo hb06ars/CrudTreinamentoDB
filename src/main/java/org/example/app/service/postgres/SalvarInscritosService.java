@@ -26,9 +26,11 @@ public class SalvarInscritosService {
                     .switchIfEmpty(Mono.error(new ObjectNotFoundException("Inscrito não encontrado com id: " + id)));
         }
 
-        public Mono<InscritoEntity> save(InscritoEntity inscritoEntity) {
-            return repository.save(inscritoEntity);
-        }
+    public Mono<InscritoEntity> save(InscritoEntity inscritoEntity) {
+        return repository.save(inscritoEntity)
+                .doOnSuccess(savedEntity -> log.info("Inscrito salvo"))
+                .doOnError(error -> log.error("Erro ao salvar inscrito: ", error));
+    }
 
         public Mono<InscritoEntity> update(Long id, InscritoEntity updatedInscritoEntity) {
             return repository.findById(id)
