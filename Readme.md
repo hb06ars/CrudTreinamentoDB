@@ -18,6 +18,9 @@ Body:
 - [Docker](https://docs.docker.com/get-docker/) baixar o Docker desktop.
 - Java 11 ou superior instalado
 - Para iniciar execute o comando docker-compose up no diretório do arquivo docker-compose.yaml
+- Para baixar diversos tipos de imagens: https://hub.docker.com/
+- Download do DBeaver para acessar o banco de dados: https://dbeaver.io/download/
+- Download do Postman para executar as requisições: https://www.postman.com/downloads/
 
 >------------------------------------------------------------------------------------------------------------------------------
 ### ALGUNS COMANDOS PARA TESTES (Kafka):
