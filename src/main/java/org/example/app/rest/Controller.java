@@ -24,9 +24,9 @@ public class Controller {
     private SalvarInscritosService service;
 
     @PostMapping("/start")
-    public void start(@RequestBody InscritoDTO inscritoDTO) throws IOException {
+    public Mono<Void> start(@RequestBody InscritoDTO inscritoDTO) throws IOException {
         log.info("Iniciando a aplicação.");
-        producer.send(inscritoDTO);
+        return producer.send(inscritoDTO);
     }
 
     @GetMapping("/{id}")

@@ -12,17 +12,21 @@ import reactor.kafka.receiver.KafkaReceiver;
 import reactor.kafka.receiver.ReceiverOptions;
 import reactor.core.publisher.Flux;
 
+import javax.annotation.PostConstruct;
+
 @Service
 @Slf4j
 public class KafkaReactiveConsumer {
 
+    private final Flux<?> kafkaFlux;
+
     public KafkaReactiveConsumer(ReceiverOptions<String, String> receiverOptions,
-             ObjectMapper objectMapper,
-             SalvarInscritosService service,
-             InscritoMapper inscritoMapper) {
+                                 ObjectMapper objectMapper,
+                                 SalvarInscritosService service,
+                                 InscritoMapper inscritoMapper) {
         KafkaReceiver<String, String> kafkaReceiver = KafkaReceiver.create(receiverOptions);
 
-        Flux<?> kafkaFlux = kafkaReceiver.receive()
+        kafkaFlux = kafkaReceiver.receive()
                 .flatMap(record -> {
                     String message = record.value();
                     try {
@@ -43,7 +47,10 @@ public class KafkaReactiveConsumer {
                         return Mono.empty();
                     }
                 });
+    }
 
+    @PostConstruct
+    public void startConsuming() {
         kafkaFlux.subscribe();
     }
 }

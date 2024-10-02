@@ -28,17 +28,20 @@ public class KafkaReactiveProducer {
         this.topic = topic;
     }
 
-    public void send(InscritoDTO inscritoDTO) {
-        try {
-            SenderRecord<String, String, Integer> record = SenderRecord.create(topic, null, null,
-                    UUID.randomUUID().toString(), objectMapper.writeValueAsString(inscritoDTO), 1);
-
-            sender.send(Mono.just(record))
-                    .doOnError(e -> System.err.println("Falha no envio: " + e))
-                    .doOnNext(r -> System.out.println("Mensagem " + r.correlationMetadata() + " enviada com sucesso"))
-                    .subscribe();
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    public Mono<Void> send(InscritoDTO inscritoDTO) {
+        return Mono.fromCallable(() -> {
+                    String payload = objectMapper.writeValueAsString(inscritoDTO);
+                    return SenderRecord.create(topic, null, null, UUID.randomUUID().toString(), payload, 1);
+                })
+                .flatMap(record ->
+                        sender.send(Mono.just(record))
+                                .doOnError(e -> System.err.println("Falha no envio: " + e))
+                                .doOnNext(r -> System.out.println("Mensagem " + r.correlationMetadata() + " enviada com sucesso"))
+                                .then()
+                )
+                .onErrorResume(JsonProcessingException.class, e -> {
+                    System.err.println("Erro ao processar JSON: " + e);
+                    return Mono.empty();
+                });
     }
 }
