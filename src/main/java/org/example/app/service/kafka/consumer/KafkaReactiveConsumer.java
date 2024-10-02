@@ -49,6 +49,13 @@ public class KafkaReactiveConsumer {
                 });
     }
 
+    /*
+        Reatividade não depende da ausência de subscribe():
+        O subscribe() é fundamental para iniciar a cadeia reativa.
+        Sem ele, a pipeline reativa não é executada.
+        No contexto de um consumer Kafka, usar subscribe() manualmente garante
+        que as mensagens sejam consumidas continuamente.
+    */
     @PostConstruct
     public void startConsuming() {
         kafkaFlux.subscribe();
