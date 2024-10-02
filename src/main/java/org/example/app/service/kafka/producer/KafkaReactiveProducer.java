@@ -2,6 +2,7 @@ package org.example.app.service.kafka.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.example.domain.dto.InscritoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import reactor.kafka.sender.SenderRecord;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class KafkaReactiveProducer {
 
     private final KafkaSender<String, String> sender;
@@ -35,12 +37,12 @@ public class KafkaReactiveProducer {
                 })
                 .flatMap(record ->
                         sender.send(Mono.just(record))
-                                .doOnError(e -> System.err.println("Falha no envio: " + e))
-                                .doOnNext(r -> System.out.println("Mensagem " + r.correlationMetadata() + " enviada com sucesso"))
+                                .doOnError(e -> log.error("Falha no envio: {}", e.getMessage()))
+                                .doOnNext(r -> log.info("Mensagem {} enviada com sucesso", r.correlationMetadata()))
                                 .then()
                 )
                 .onErrorResume(JsonProcessingException.class, e -> {
-                    System.err.println("Erro ao processar JSON: " + e);
+                    log.error("Erro ao processar JSON: {}", e.getMessage());
                     return Mono.empty();
                 });
     }
