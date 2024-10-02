@@ -16,7 +16,7 @@ Body:
 ## Pré-requisitos
 
 - [Docker](https://docs.docker.com/get-docker/) instalado
-- Java 8 ou superior instalado
+- Java 11 ou superior instalado
 - Para iniciar execute o comando docker-compose up no diretório do arquivo docker-compose.yaml
 
 >------------------------------------------------------------------------------------------------------------------------------
