@@ -15,12 +15,12 @@ Body:
 
 ## Pré-requisitos
 
-- [Docker](https://docs.docker.com/get-docker/) instalado
+- [Docker](https://docs.docker.com/get-docker/) baixar o Docker desktop.
 - Java 11 ou superior instalado
 - Para iniciar execute o comando docker-compose up no diretório do arquivo docker-compose.yaml
 
 >------------------------------------------------------------------------------------------------------------------------------
-### COMANDOS PARA TESTES (Kafka):
+### ALGUNS COMANDOS PARA TESTES (Kafka):
 
 ### Acesse a conexão do Kafka primeiro:
 docker exec -it kafka bash
