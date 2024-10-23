@@ -3,7 +3,7 @@ package org.example.app.service.kafka.consumer;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.example.app.service.postgres.SalvarInscritosService;
+import org.example.app.service.postgres.InscritosService;
 import org.example.domain.dto.InscritoDTO;
 import org.example.infra.mapper.InscritoMapper;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class KafkaReactiveConsumer {
 
     public KafkaReactiveConsumer(ReceiverOptions<String, String> receiverOptions,
                                  ObjectMapper objectMapper,
-                                 SalvarInscritosService service,
+                                 InscritosService service,
                                  InscritoMapper inscritoMapper) {
         KafkaReceiver<String, String> kafkaReceiver = KafkaReceiver.create(receiverOptions);
 

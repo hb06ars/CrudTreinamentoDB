@@ -3,7 +3,7 @@ package org.example.app.rest;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.example.app.service.kafka.producer.KafkaReactiveProducer;
-import org.example.app.service.postgres.SalvarInscritosService;
+import org.example.app.service.postgres.InscritosService;
 import org.example.domain.dto.InscritoDTO;
 import org.example.domain.entity.InscritoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class Controller {
     KafkaReactiveProducer producer;
 
     @Autowired
-    private SalvarInscritosService service;
+    private InscritosService service;
 
     @PostMapping("/start")
     public Mono<Void> start(@RequestBody InscritoDTO inscritoDTO) throws IOException {
@@ -37,6 +37,14 @@ public class Controller {
     @GetMapping
     public Flux<InscritoEntity> findAll() {
         return service.findAll();
+    }
+
+    @GetMapping("/paginado")
+    public Flux<InscritoEntity> findAllPeageble(@RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "10") int size,
+                                                String orderBy,
+                                                String direction) {
+        return service.findAllPeageble(page, size, orderBy, direction);
     }
 
     @PostMapping
