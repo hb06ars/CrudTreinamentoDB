@@ -1,4 +1,4 @@
-# Projeto de Exemplo com treinamento Local
+# Projeto de Exemplo Local
 
 Autor: José Henrique Siqueira Brandão
 
