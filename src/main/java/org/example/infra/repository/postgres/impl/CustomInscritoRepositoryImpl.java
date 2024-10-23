@@ -8,8 +8,6 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
-
 @Repository
 public class CustomInscritoRepositoryImpl implements CustomInscritoRepository {
 
@@ -28,9 +26,9 @@ public class CustomInscritoRepositoryImpl implements CustomInscritoRepository {
         direction = !"ASC".equalsIgnoreCase(direction) &&
                     !"DESC".equalsIgnoreCase(direction) ? "ASC" : direction;
 
-        String query = "SELECT * FROM public.inscrito " +
-                "ORDER BY " + orderBy + " " + direction + " " +
-                "LIMIT :size OFFSET :offset";
+        String query =  "SELECT * FROM public.inscrito " +
+                        "ORDER BY " + orderBy + " " + direction + " " +
+                        "LIMIT :size OFFSET :offset";
 
         return databaseClient.sql(query)
                 .bind("size", size)

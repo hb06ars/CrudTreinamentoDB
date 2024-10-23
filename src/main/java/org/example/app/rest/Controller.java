@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.app.service.kafka.producer.KafkaReactiveProducer;
 import org.example.app.service.postgres.InscritosService;
 import org.example.domain.dto.InscritoDTO;
+import org.example.domain.dto.PaginatedResponse;
 import org.example.domain.entity.InscritoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,10 +41,10 @@ public class Controller {
     }
 
     @GetMapping("/paginado")
-    public Flux<InscritoEntity> findAllPeageble(@RequestParam(defaultValue = "0") int page,
-                                                @RequestParam(defaultValue = "10") int size,
-                                                String orderBy,
-                                                String direction) {
+    public Mono<PaginatedResponse<InscritoEntity>> findAllPeageble(@RequestParam(defaultValue = "0") int page,
+                                                                   @RequestParam(defaultValue = "10") int size,
+                                                                   String orderBy,
+                                                                   String direction) {
         return service.findAllPeageble(page, size, orderBy, direction);
     }
 
