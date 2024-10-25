@@ -6,27 +6,32 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.app.service.postgres.InscritosService;
 import org.example.domain.dto.InscritoDTO;
 import org.example.infra.mapper.InscritoMapper;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.kafka.receiver.KafkaReceiver;
-import reactor.kafka.receiver.ReceiverOptions;
-import reactor.core.publisher.Flux;
-
-import javax.annotation.PostConstruct;
 
 @Service
 @Slf4j
 public class KafkaReactiveConsumer {
 
-    private final Flux<?> kafkaFlux;
+    private final KafkaReceiver<String, String> kafkaReceiver;
+    private final InscritosService service;
+    private final ObjectMapper objectMapper;
+    private final InscritoMapper inscritoMapper;
 
-    public KafkaReactiveConsumer(ReceiverOptions<String, String> receiverOptions,
-                                 ObjectMapper objectMapper,
-                                 InscritosService service,
-                                 InscritoMapper inscritoMapper) {
-        KafkaReceiver<String, String> kafkaReceiver = KafkaReceiver.create(receiverOptions);
+    public KafkaReactiveConsumer(KafkaReceiver<String, String> kafkaReceiver, InscritosService service, ObjectMapper objectMapper, InscritoMapper inscritoMapper) {
+        this.kafkaReceiver = kafkaReceiver;
+        this.service = service;
+        this.objectMapper = objectMapper;
+        this.inscritoMapper = inscritoMapper;
+    }
 
-        kafkaFlux = kafkaReceiver.receive()
+    @EventListener(ContextRefreshedEvent.class)
+    public void startConsuming() {
+        System.out.println("CONSUMINDO");
+        kafkaReceiver.receive()
                 .flatMap(record -> {
                     String message = record.value();
                     try {
@@ -46,18 +51,7 @@ public class KafkaReactiveConsumer {
                         log.error("Erro ao processar a mensagem: ", e);
                         return Mono.empty();
                     }
-                });
+                }).subscribe();
     }
 
-    /*
-        Reatividade não depende da ausência de subscribe():
-        O subscribe() é fundamental para iniciar a cadeia reativa.
-        Sem ele, a pipeline reativa não é executada.
-        No contexto de um consumer Kafka, usar subscribe() manualmente garante
-        que as mensagens sejam consumidas continuamente.
-    */
-    @PostConstruct
-    public void startConsuming() {
-        kafkaFlux.subscribe();
-    }
 }
