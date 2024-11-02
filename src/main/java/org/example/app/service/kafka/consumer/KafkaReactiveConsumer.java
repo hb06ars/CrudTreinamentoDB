@@ -14,6 +14,7 @@ import reactor.kafka.receiver.KafkaReceiver;
 
 @Service
 @Slf4j
+
 public class KafkaReactiveConsumer {
 
     private final KafkaReceiver<String, String> kafkaReceiver;
@@ -30,13 +31,11 @@ public class KafkaReactiveConsumer {
 
     @EventListener(ContextRefreshedEvent.class)
     public void startConsuming() {
-        System.out.println("CONSUMINDO");
         kafkaReceiver.receive()
                 .flatMap(record -> {
                     String message = record.value();
                     try {
                         log.info("Tópico consumido com sucesso no Kafka...");
-
                         InscritoDTO inscritoDTO = objectMapper.readValue(message, new TypeReference<>() {});
                         log.info("Mapper realizado com sucesso");
 
